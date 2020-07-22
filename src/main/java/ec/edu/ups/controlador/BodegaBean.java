@@ -378,7 +378,7 @@ public class BodegaBean implements Serializable {
         Cookie cookie = (Cookie) FacesContext.getCurrentInstance().getExternalContext().getRequestCookieMap().get("administrador");
         if(cookie == null || cookie.getValue().equals("")){
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/public/paginaCatalogo.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto-1.0-SNAPSHOT/public/paginaCatalogo.xhtml");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -388,7 +388,7 @@ public class BodegaBean implements Serializable {
 
     public void regresar(){
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/private/paginaAdministrador.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto-1.0-SNAPSHOT/private/paginaAdministrador.xhtml");
         } catch (Exception e) {
             e.printStackTrace();
         }

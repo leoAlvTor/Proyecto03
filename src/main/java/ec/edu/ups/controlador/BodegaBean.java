@@ -50,7 +50,7 @@ public class BodegaBean implements Serializable {
     private boolean level2ListDisabled = true, level3ListDisabled = true;
     private Map<String, String> paises;
     private String codePais;
-    private String apiKey="2bc544a252b49c53bf13d753815473cd";
+    private String apiKey="434a6e3e7622c1e7f1a9f6d2452543db";
 
 
     public BodegaBean(){

@@ -3,7 +3,6 @@ package ec.edu.ups.controlador;
 import ec.edu.ups.ejb.UsuarioFacade;
 import ec.edu.ups.entidad.Usuario;
 
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -24,7 +23,8 @@ import java.util.Map;
 @Named
 @SessionScoped
 public class LogInBean implements Serializable {
-    private static final long serialVersionUID=1L;
+
+    private static final long serialVersionUID = 1L;
     private String correo;
     private String password;
     private String msg;
@@ -60,49 +60,71 @@ public class LogInBean implements Serializable {
         this.msg = msg;
     }
 
-    public  String validateUser(){
+    public String validateUser() {
         Usuario user = null;
         try {
             user = ejbUsuarioFacade.logIn(correo, password);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if(user == null){
+        if (user == null) {
             return "El atributo es nulo";
-        }else{
-
+        } else {
             try {
-                if(user.getRol().getNombre().toLowerCase().equals("administrador")) {
+                if (user.getRol().getNombre().toLowerCase().equals("administrador")) {
                     createCookie(user.getCorreo(), true);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("/private/paginaAdministrador.xhtml");
-                }else {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/private/paginaAdministrador.xhtml");
+                } else {
                     createCookie(user.getCorreo(), false);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("/factura.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/factura.xhtml");
                 }
-            }catch (Exception e){e.printStackTrace();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return "";
     }
 
-    private void createCookie(String correo, boolean isAdmin){
-        String name;
-        if(isAdmin)
-            name = "administrador";
-        else
-            name = "empleado";
-        System.out.println(correo);
-        String value = correo;
+    private Object[] existenCookiesAntiguas(boolean isAdmin) {
+        Cookie cookieEmpleado = (Cookie) FacesContext.getCurrentInstance().getExternalContext().getRequestCookieMap().get("empleado");
+        Cookie cookieAdminist = (Cookie) FacesContext.getCurrentInstance().getExternalContext().getRequestCookieMap().get("administrador");
+        if (cookieEmpleado != null && !isAdmin) {
+            return new Object[]{true, cookieEmpleado};
+        } else if (cookieAdminist != null && isAdmin) {
+            return new Object[]{true, cookieAdminist};
+        } else {
+            return new Object[]{false, null};
+        }
+    }
+
+    private void createCookie(String correo, boolean isAdmin) {
         Map<String, Object> properties = new HashMap<>();
-        properties.put("maxAge", -1);
-        properties.put("path", "/");
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        try {
-            System.out.println("Se creo la cookie");
-            externalContext.addResponseCookie(name, value+"!", properties);
-        }catch (Exception e){
-            System.out.println("Algo salio mal Cookie");
-            e.printStackTrace();
+            properties.put("maxAge", -1);
+            properties.put("path", "/");
+        if (!(Boolean)existenCookiesAntiguas(isAdmin)[0]) {
+            System.out.println("No existe la cookie aun! <------------------------");
+            String name;
+            if (isAdmin) {
+                name = "administrador";
+            } else {
+                name = "empleado";
+            }
+            String value = correo;
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            try {
+                System.out.println("Se creo la cookie");
+                externalContext.addResponseCookie(name, value + "!", properties);
+            } catch (Exception e) {
+                System.out.println("Algo salio mal Cookie");
+                e.printStackTrace();
+            }
+        }else if((Boolean)existenCookiesAntiguas(isAdmin)[0] && isAdmin){
+           // FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("administrador", correo, properties);
+            ((Cookie) existenCookiesAntiguas(isAdmin)[1]).setValue(correo);
+        }else if((Boolean)existenCookiesAntiguas(isAdmin)[0] && !isAdmin){
+            //FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("empleado", correo, properties);
+            ((Cookie) existenCookiesAntiguas(!isAdmin)[1]).setValue(correo);
         }
     }
 
@@ -111,7 +133,7 @@ public class LogInBean implements Serializable {
             Cookie cookie = (Cookie) FacesContext.getCurrentInstance().getExternalContext().getRequestCookieMap().get("cookie_session");
             String value = URLDecoder.decode(cookie.getValue(), "UTF-8");
             return "Valor cookie: " + value;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "No existe la cookie!";
         }

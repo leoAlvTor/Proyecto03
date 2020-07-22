@@ -77,6 +77,9 @@ public class DetalleBean implements Serializable {
 
     public String add() {
         producto = ejbProductoFacade.buscarProducto(name);
+        if (producto == null){
+            busqueda= "producto no encontrado";
+        }else{
         if (producto.getStock() != 0){
             this.id=producto.getCodigo();
             this.name = producto.getNombre();
@@ -93,7 +96,10 @@ public class DetalleBean implements Serializable {
             this.totalpagar=this.iva + subtotalcabecera;
         }else
             this.busqueda = "producto no encontrado : sin stock : " ;
+        
+        }
         {
+            
 
         }
         return null;
@@ -283,9 +289,9 @@ public class DetalleBean implements Serializable {
 
 
     //metodo para presentar si se encuentra la persona
-    public void mensaje(){
+    public void buscarPersona(){
         persona = ejbPersonaFacade.find(this.cedula);
-        if ("".equals(this.cedula) || !this.cedula.equals(persona.getCedula()))  {
+        if (persona == null)  {
             this.mensaje = "no se encontro ningun usuario ";
         }
         else {
@@ -295,6 +301,7 @@ public class DetalleBean implements Serializable {
             this.celular = persona.getTelefono();
             this.direccion = persona.getDireccion();
         }
+        
     }
 
     //metodo para registrar una persona a facturar
@@ -358,13 +365,13 @@ public class DetalleBean implements Serializable {
         System.out.println(cookie + "<-->" + cookie.getValue());
         if(cookie == null){
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/public/paginaCatalogo.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/public/paginaCatalogo.xhtml");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }else if(cookie.getValue().isEmpty())
             try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/public/logIn.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/public/logIn.xhtml");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -373,7 +380,7 @@ public class DetalleBean implements Serializable {
 
     public void redirectPedido(){
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/private/paginaPedidos.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/private/paginaPedidos.xhtml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -381,7 +388,7 @@ public class DetalleBean implements Serializable {
 
     public void anularFacturas(){
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/listarFacturas.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/listarFacturas.xhtml");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -393,7 +400,7 @@ public class DetalleBean implements Serializable {
         if(cookie.getValue().equals("")) System.out.println("Se ha nulificado la cookie de manera correcta!"); else
             System.out.println("Se ha nulificado el valor correctamente!");
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/public/paginaCatalogo.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/public/paginaCatalogo.xhtml");
         } catch (Exception e) {
             e.printStackTrace();
         }

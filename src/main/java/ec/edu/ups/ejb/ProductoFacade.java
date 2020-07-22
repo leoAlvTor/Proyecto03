@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.String.valueOf;
+import java.util.concurrent.ExecutionException;
 
 @Stateless
 public class ProductoFacade extends AbstractFacade<Producto> {
@@ -28,13 +29,24 @@ public class ProductoFacade extends AbstractFacade<Producto> {
     }
 
     public Producto buscarProducto(String nombre){
-
+        
+       
+        
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Producto> criteriaQuery = criteriaBuilder.createQuery(Producto.class);
         Root<Producto> usuarioRoot=criteriaQuery.from(Producto.class);
-        Predicate predicate = criteriaBuilder.equal(usuarioRoot.get("nombre"),nombre);
+        
+        Predicate predicate = criteriaBuilder.equal(usuarioRoot.get("nombre"),nombre.toUpperCase());
         criteriaQuery.select(usuarioRoot).where(predicate);
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        try{
+            return entityManager.createQuery(criteriaQuery).getSingleResult();
+            
+        }catch(Exception e){
+            return null;
+        
+        }
+
+        
     }
 
     public Producto buscarPrductoPorNombre(String nombre){

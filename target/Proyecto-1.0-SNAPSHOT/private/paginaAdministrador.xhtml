@@ -33,7 +33,7 @@
             <h:commandLink/>
             <h:commandLink/>
             <h:commandLink action="#{productoBean.redirectBodegas}">Administrar Bodegas <i class='fab fa-codepen' style='font-size:24px'/></h:commandLink>
-            <h:commandLink>Pedidos <i class='fas fa-address-card' style='font-size:24px'/></h:commandLink>
+           
 
             <h:commandLink action="#{productoBean.deleteCookie}">Cerrar Sesion  <i class="fa fa-window-close" style="font-size:24px"/></h:commandLink>
         </h:form>
@@ -42,7 +42,7 @@
 
 
     <h:form style="float: left;width: 40%;margin-right: 10%;margin-left: 10%;margin-top: 4%;">
-        <h3>JSF REGISTER PRODUCT</h3>
+        <h3>REGISTRAR  PRODUCTO</h3>
         <h:outputText value="nombre" style="background-color: blue; color: aliceblue;font-style: inherit;font-size: 20px; display: block;width: 60%;"/>
         <h:inputText id="nombre" value="#{productoBean.nombre}" style="width: 60%;"></h:inputText>
         <h:message for="nombre"></h:message>
@@ -86,7 +86,7 @@
                          value="Registrar" class="btn btn-primary" style="margin-left: 7%;width: 45%;margin-top: 5%"></h:commandButton>
 
     </h:form >
-
+    <h3>lISTA DE CATEGORIAS</h3>
     <h:dataTable  style="width: 17%; height:200px;margin-top: 2%;" value="#{productoBean.list}" var="c" styleClass="table table-dark table-striped"
                   headerClass="cabeceraTabla" rowClasses="filaPar,filaImpar">
         <h:column>
@@ -99,6 +99,7 @@
         </h:column>
     </h:dataTable>
     <h:form>
+        <h3>AGREGAR STOCK</h3>
         <h:outputText value="Agregar a Stock" style="float: left; background-color: blue; color: aliceblue;font-style: inherit;font-size: 20px;display: block;width: 30%;"/>
 
         <h:selectOneMenu styleClass="btn btn-secondary dropdown-toggle" value="#{productoBean.selectedProducto}" style="margin-right: 5%;">
@@ -115,9 +116,17 @@
         </h:selectManyMenu>
 
         <h:commandButton action="#{productoBean.aumentarStock}"
-                         value="Actualizar" class="btn btn-primary" style="margin-left: 3%;width: 25%;margin-top: 5%"></h:commandButton>
+                         value="Actualizar" class="btn btn-primary" style="    width: 18%;
+    /* margin-top: 3%; */
+    margin: 12px;
+    margin-left: 65%;"></h:commandButton>
 
     </h:form>
+    
+    <div class="alert alert-primary" role="alert">
+        Escoja la bodega a ver el inventario!
+    </div>
+    
     <h:form>
         <fieldset>
             <h:selectOneMenu value="#{productoBean.bodega_inventario}">

@@ -74,10 +74,10 @@ public class LogInBean implements Serializable {
             try {
                 if (user.getRol().getNombre().toLowerCase().equals("administrador")) {
                     createCookie(user.getCorreo(), true);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/private/paginaAdministrador.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto-1.0-SNAPSHOT/private/paginaAdministrador.xhtml");
                 } else {
                     createCookie(user.getCorreo(), false);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto/factura.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/Proyecto-1.0-SNAPSHOT/factura.xhtml");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
